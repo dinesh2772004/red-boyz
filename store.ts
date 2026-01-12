@@ -2,7 +2,9 @@
 import { Member, Event, Budget, AdminUser, AppState, EventStatus, IncomeEntry, ExpenseEntry } from './types';
 import { INITIAL_MEMBERS, INITIAL_EVENTS, INITIAL_BUDGETS } from './constants';
 
-const API_URL = 'http://localhost:5000/api';
+import { API_URL as BASE_URL } from './config';
+const API_URL = `${BASE_URL}/api`;
+
 
 let state: AppState = {
   members: [],
