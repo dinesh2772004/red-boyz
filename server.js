@@ -179,7 +179,7 @@ app.get("/health", (req, res) => {
 // Serve static files from React build
 app.use(express.static(path.join(__dirname, "dist")));
 
-// Catch-all route for React (Express 5 compatible)
+// Catch-all route for React Router
 app.get(/.*/, (req, res) => {
   res.sendFile(path.join(__dirname, "dist", "index.html"));
 });
