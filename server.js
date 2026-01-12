@@ -61,11 +61,14 @@ app.get("/api/members", async (req, res) => {
 });
 
 app.post("/api/members", async (req, res) => {
+  console.log("Received POST /api/members body:", req.body);
   try {
     const member = new Member(req.body);
     await member.save();
+    console.log("Saved member:", member);
     res.json(member);
   } catch (err) {
+    console.error("Error saving member:", err);
     res.status(500).json({ error: err.message });
   }
 });
