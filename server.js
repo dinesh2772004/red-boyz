@@ -5,10 +5,8 @@ import dotenv from "dotenv";
 import path from "path";
 import { fileURLToPath } from "url";
 
-// Load environment variables
 dotenv.config();
 
-// Fix __dirname for ES Modules
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
@@ -19,7 +17,7 @@ const PORT = process.env.PORT || 5000;
 app.use(cors());
 app.use(express.json({ limit: "50mb" }));
 
-// MongoDB connection
+// MongoDB Connection
 mongoose
   .connect(process.env.MONGODB_URI)
   .then(() => console.log("Connected to MongoDB Atlas"))
@@ -50,7 +48,6 @@ const budgetSchema = new mongoose.Schema({
 const Member = mongoose.model("Member", memberSchema);
 const Event = mongoose.model("Event", eventSchema);
 const Budget = mongoose.model("Budget", budgetSchema);
-
 // ---------------- API Routes ---------------- //
 
 // Members
@@ -180,11 +177,11 @@ app.get("/health", (req, res) => {
 
 // ---------------- Static files and SPA ---------------- //
 // Serve static files from React build
-app.use(express.static(path.join(__dirname, 'dist')));
+app.use(express.static(path.join(__dirname, "dist")));
 
-// Catch-all route for React (must be after API routes and static)
+// Catch-all route for React (Express 5 compatible)
 app.get(/.*/, (req, res) => {
-  res.sendFile(path.join(__dirname, 'dist', 'index.html'));
+  res.sendFile(path.join(__dirname, "dist", "index.html"));
 });
 
 // Start server
