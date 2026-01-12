@@ -5,8 +5,10 @@ import dotenv from "dotenv";
 import path from "path";
 import { fileURLToPath } from "url";
 
+// Load environment variables
 dotenv.config();
 
+// Fix __dirname for ES Modules
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
@@ -17,7 +19,7 @@ const PORT = process.env.PORT || 5000;
 app.use(cors());
 app.use(express.json({ limit: "50mb" }));
 
-// MongoDB Connection
+// MongoDB connection
 mongoose
   .connect(process.env.MONGODB_URI)
   .then(() => console.log("Connected to MongoDB Atlas"))
@@ -41,27 +43,15 @@ const eventSchema = new mongoose.Schema({
 
 const budgetSchema = new mongoose.Schema({
   eventId: String,
-  income: [
-    {
-      contributor: String,
-      amount: Number,
-      date: String,
-    },
-  ],
-  expenses: [
-    {
-      description: String,
-      amount: Number,
-      date: String,
-    },
-  ],
+  income: [{ contributor: String, amount: Number, date: String }],
+  expenses: [{ description: String, amount: Number, date: String }],
 });
 
 const Member = mongoose.model("Member", memberSchema);
 const Event = mongoose.model("Event", eventSchema);
 const Budget = mongoose.model("Budget", budgetSchema);
 
-// API Routes
+// ---------------- API Routes ---------------- //
 
 // Members
 app.get("/api/members", async (req, res) => {
@@ -188,14 +178,13 @@ app.get("/health", (req, res) => {
   });
 });
 
-// Serve static files
-app.use(express.static(path.join(__dirname, 'dist')));
+// ---------------- Static files and SPA ---------------- //
+app.use(express.static(path.join(__dirname, "dist")));
 
-// Catch-all route (must be after static files and API routes)
-app.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname, 'dist', 'index.html'));
+// Catch-all route for React SPA (must be last)
+app.get("*", (req, res) => {
+  res.sendFile(path.resolve(__dirname, "dist", "index.html"));
 });
-
 
 // Start server
 app.listen(PORT, () => {
