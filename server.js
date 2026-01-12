@@ -188,13 +188,14 @@ app.get("/health", (req, res) => {
   });
 });
 
-// Serve static files from React "dist" folder
-app.use(express.static(path.join(__dirname, "dist")));
+// Serve static files
+app.use(express.static(path.join(__dirname, 'dist')));
 
-// Catch-all route (React frontend routing)
-app.get("/*", (req, res) => {
-  res.sendFile(path.resolve(__dirname, "dist", "index.html"));
+// Catch-all route (must be after static files and API routes)
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname, 'dist', 'index.html'));
 });
+
 
 // Start server
 app.listen(PORT, () => {
