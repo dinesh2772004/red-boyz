@@ -179,11 +179,12 @@ app.get("/health", (req, res) => {
 });
 
 // ---------------- Static files and SPA ---------------- //
-app.use(express.static(path.join(__dirname, "dist")));
+// Serve static files from React build
+app.use(express.static(path.join(__dirname, 'dist')));
 
-// Catch-all route for React SPA (must be last)
-app.get("*", (req, res) => {
-  res.sendFile(path.resolve(__dirname, "dist", "index.html"));
+// Catch-all route for React (must be after API routes and static)
+app.get(/.*/, (req, res) => {
+  res.sendFile(path.join(__dirname, 'dist', 'index.html'));
 });
 
 // Start server
